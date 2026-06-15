@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuratore Modulo d'Ordine - La Primavera</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #c62828;
+            --primary-dark: #9a1f1f;
+            --primary-light: #ffebee;
+            --dark: #121212;
+            --dark-surface: #1e1e1e;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-500: #adb5bd;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gold: #b0935a;
+            --gold-light: #f5f0e6;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: var(--gray-800);
+            line-height: 1.5;
+            padding-bottom: 120px; /* Space for sticky footer */
+        }
+
+        /* Header design */
+        header {
+            background-color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            max-height: 35px;
+            object-fit: contain;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* Form sections */
+        .card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: var(--transition);
+        }
+
+        .card:focus-within {
+            border-color: var(--primary);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title-badge {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--gray-300);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            color: var(--dark);
+            background-color: var(--gray-100);
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(198, 40, 40, 0.1);
+        }
+
+        /* Proposal Section styling */
+        .proposal-card {
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+            background-color: white;
+        }
+
+        .proposal-card.active {
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(198, 40, 40, 0.08);
+        }
+
+        .proposal-header {
+            background-color: var(--gray-100);
+            padding: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            transition: var(--transition);
+        }
+
+        .proposal-card.active .proposal-header {
+            background-color: var(--primary-light);
+        }
+
+        .proposal-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .proposal-checkbox-custom {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--gray-500);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            background-color: white;
+        }
+
+        .proposal-card.active .proposal-checkbox-custom {
+            border-color: var(--primary);
+            background-color: var(--primary);
+        }
+
+        .proposal-checkbox-custom::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .proposal-card.active .proposal-checkbox-custom::after {
+            display: block;
+        }
+
+        .proposal-name-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .proposal-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .proposal-card.active .proposal-name {
+            color: var(--primary-dark);
+        }
+
+        .proposal-price-indicator {
+            font-size: 12px;
+            color: var(--gray-700);
+            font-weight: 500;
+        }
+
+        .proposal-card.active .proposal-price-indicator {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .proposal-body {
+            padding: 20px;
+            display: none;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .proposal-card.active .proposal-body {
+            display: block;
+        }
+
+        /* Option items (Radio/Checkbox Pill buttons) */
+        .option-group-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--gray-700);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            margin-top: 16px;
+            border-left: 3px solid var(--primary);
+            padding-left: 8px;
+        }
+
+        .option-group-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .options-grid.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .option-pill {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .option-pill input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .option-pill-content {
+            background-color: var(--gray-100);
+            border: 1.5px solid var(--gray-200);
+            padding: 10px;
+            text-align: center;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 48px;
+        }
+
+        .option-pill:hover .option-pill-content {
+            border-color: var(--gray-500);
+        }
+
+        .option-pill input:checked + .option-pill-content {
+            background-color: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+
+        .pill-subtext {
+            font-size: 9px;
+            color: var(--gray-700);
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+        .option-pill input:checked + .option-pill-content .pill-subtext {
+            color: var(--primary);
+        }
+
+        /* Text helper tags */
+        .new-badge {
+            background-color: var(--primary);
+            color: white;
+            font-size: 8px;
+            font-weight: 800;
+            padding: 1px 4px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-left: 4px;
+            display: inline-block;
+        }
+
+        /* Promo banner */
+        .promo-banner {
+            background: linear-gradient(135deg, var(--dark) 0%, #333 100%);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--gold);
+        }
+
+        .promo-banner-main {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffd700;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .promo-banner-sub {
+            font-size: 11px;
+            color: var(--gray-300);
+            line-height: 1.4;
+        }
+
+        /* Sticky Footer details */
+        .sticky-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+            padding: 16px 20px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .price-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .price-value-container {
+            text-align: right;
+        }
+
+        .price-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .discount-applied {
+            font-size: 11px;
+            color: #388e3c;
+            font-weight: 700;
+            display: none;
+        }
+
+        .buttons-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #128c7e;
+        }
+
+        .btn-email {
+            background-color: #ea4335;
+        }
+
+        .btn-email:hover {
+            background-color: #c5221f;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Responsive spacing adjustment */
+        @media (max-width: 400px) {
+            .options-grid.three-col {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/4QDORXhpZgAATU0AKgAAAAgABgEaAAUAAAABAAAAVgEbAAUAAAABAAAAXgEoAAMAAAABAAIAAAExAAIAAAAiAAAAZgEyAAIAAAAUAAAAiIdpAAQAAAABAAAAnAAAAAAAAABIAAAAAQAAAEgAAAABQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgTWFjaW50b3NoADIwMjI6MDM6MTUgMTE6MzY6MDkAAAOgAQADAAAAAf//AACgAgADAAAAAQEYAACgAwADAAAAAQBWAAAAAAAA/+EQIWh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8APD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJCZW5RIFBEMzIwMFUiIHhtcDpDcmVhdGVEYXRlPSIyMDE5LTA2LTI4VDEwOjMwOjQxKzAyOjAwIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE5IE1hY2ludG9zaCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMi0wMy0xNVQxMTozNjowOSswMTowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjItMDMtMTVUMTE6MzY6MDkrMDE6MDAiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODcyRUVGODRDRDYyMTFFOUFFRDY4Q0U2REU4REQ2NDQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6YjRhYWQ1OWYtN2Y5Yi00NDAxLWJmYjgtMmIxZjhhYjM1OTM4IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6NDdhNjBiOWEtZjdiNS00NzI1LTk1ZWYtYjJmNjk2NzI2NDk2Ij4gPHBob3Rvc2hvcDpEb2N1bWVudEFuY2VzdG9ycz4gPHJkZjpCYWc+IDxyZGY6bGk+eG1wLmRpZDoxNGRiMjc2Yi03NDM3LTQ0Y2MtYTI5MC0xNTc5ZTVjMDg2NmQ8L3JkZjpsaT4gPHJkZjpsaT54bXAuZGlkOkRDMTBGNjU2Nzk3MjExRTU5MjM0OUM4QUEyMUJENUFFPC9yZGY6bGk+IDwvcmRmOkJhZz4gPC9waG90b3Nob3A6RG9jdW1lbnRBbmNlc3RvcnM+IDx4bXBNTTpEZXJpdmVkRnJvbSB4bXBNTTpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6MjUxNzBkMzgtY2Y5Ny0wYzRhLWE3ZjctNzMxMGIzZjdhMWU3IiB4bXBNTTppbnN0YW5jZUlEPSJ4bXAuaWlkOjZhNDA3YjAzLTZkYzAtNDIwYy1hMmFiLTZlNzVjYzE0MmJhMyIvPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgeG1wTU06YWN0aW9uPSJzYXZlZCIgeG1wTU06Y2hhbmdlZD0iLyIgeG1wTU06aW5zdGFuY2VJRD0ieG1wLmlpZDo2MDMxNTFhNC1lNzExLTQyZTYtOTRjMS1hZjU3ZmQ3N2JmMTgiIHhtcE1NOnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyMS4wIChNYWNpbnRvc2gpIiB4bXBNTTp3aGVuPSIyMDE5LTEyLTIwVDEyOjU5OjUwKzAxOjAwIi8+IDxyZGY6bGkgeG1wTU06YWN0aW9uPSJzYXZlZCIgeG1wTU06Y2hhbmdlZD0iLyIgeG1wTU06aW5zdGFuY2VJRD0ieG1wLmlpZDpiNGFhZDU5Zi03ZjliLTQ0MDEtYmZiOC0yYjFmOGFiMzU5MzgiIHhtcE1NOnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyMi4wIChNYWNpbnRvc2gpIiB4bXBNTTp3aGVuPSIyMDIwLTExLTIzVDE3OjMwOjMzKzAxOjAwIi8+IDxyZGY6bGkgeG1wTU06YWN0aW9uPSJwcm9kdWNlZCIgeG1wTU06c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgUGhvdG8gMS4xMC40IiB4bXBNTTp3aGVuPSIyMDIyLTAxLTIwVDE1OjA5OjU2KzAxOjAwIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJwcm9kdWNlZCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgUGhvdG8gMS4xMC40IiBzdEV2dDp3aGVuPSIyMDIyLTAzLTE1VDExOjM2OjA5KzAxOjAwIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8P3hwYWNrZXQgZW5kPSJ3Ij8+/+0ALFBob3Rvc2hvcCAzLjAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/iAfBJQ0NfUFJPRklMRQABAQAAAeBsY21zBAAAAG1udHJSR0IgWFlaIAfkAAsAFwAIABcAImFjc3BBUFBMAAAAAEFQUEwAAAAAAAAAAAAAAAAAAAABAAD21gABAAAA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" alt="La Primavera" class="logo">
+    <div class="header-title">Configuratore Ordine</div>
+</header>
+
+<div class="app-container">
+    
+    <!-- Dati cliente card -->
+    <div class="card">
+        <div class="card-title">
+            <span>Dati Rivenditore / Cliente</span>
+            <span class="card-title-badge">Step 1</span>
+        </div>
+        <div class="form-group">
+            <label for="cliente">Cliente / Ragione Sociale</label>
+            <input type="text" id="cliente" class="input-field" placeholder="Es. Arredamenti Rossi">
+        </div>
+        <div class="form-group">
+            <label for="citta">Città</label>
+            <input type="text" id="citta" class="input-field" placeholder="Es. Milano">
+        </div>
+    </div>
+
+    <!-- PROPOSTE CONFIGURATOR -->
+    <div class="card">
+        <div class="card-title">
+            <span>Selezione Modelli</span>
+            <span class="card-title-badge">Step 2</span>
+        </div>
+        
+        <!-- PROPOSTA 1: MARIO -->
+        <div class="proposal-card" id="prop-mario">
+            <div class="proposal-header" onclick="toggleProposal('mario')">
+                <div class="proposal-header-left">
+                    <div class="proposal-checkbox-custom"></div>
+                    <div class="proposal-name-group">
+                        <span class="proposal-name">Tavolo Mario + 4 sedie MIAMI</span>
+                        <span class="proposal-price-indicator" id="price-lbl-mario">Nessuna opzione selezionata</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-body">
+                <div class="option-group-title">1. Dimensioni e Finitura Piano</div>
+                <div class="options-grid">
+                    <!-- 138x90 Options -->
+                    <label class="option-pill">
+                        <input type="radio" name="mario_piano" value="mario_138_travertino" data-price="920.20" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>138x90 Travertino</span>
+                            <span class="pill-subtext">€ 920,20</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_piano" value="mario_138_calacatta" data-price="944.80" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>138x90 Calacatta Opaco</span>
+                            <span class="pill-subtext">€ 944,80</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_piano" value="mario_138_hpl" data-price="748.60" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>138x90 HPL</span>
+                            <span class="pill-subtext">€ 748,60</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_piano" value="mario_138_lucido" data-price="1002.30" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>138x90 Calacatta Luc.</span>
+                            <span class="pill-subtext">€ 1.002,30</span>
+                        </div>
+                    </label>
+                    
+                    <!-- 160x90 Options -->
+                    <label class="option-pill">
+                        <input type="radio" name="mario_piano" value="mario_160_travertino" data-price="944.30" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>160x90 Travertino</span>
+                            <span class="pill-subtext">€ 944,30</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_piano" value="mario_160_calacatta" data-price="968.50" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>160x90 Calacatta Opaco</span>
+                            <span class="pill-subtext">€ 968,50</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_piano" value="mario_160_hpl" data-price="766.80" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>160x90 HPL</span>
+                            <span class="pill-subtext">€ 766,80</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_piano" value="mario_160_lucido" data-price="1029.00" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>160x90 Calacatta Luc.</span>
+                            <span class="pill-subtext">€ 1.029,00</span>
+                        </div>
+                    </label>
+                    <!-- Option Su Misura -->
+                    <label class="option-pill">
+                        <input type="radio" name="mario_piano" value="mario_sumisura" data-price="0" onclick="updatePrices()">
+                        <div class="option-pill-content" style="border-color: var(--gold);">
+                            <span style="color: var(--gold); font-weight: 700;">Su Misura</span>
+                            <span class="pill-subtext">Personalizzato</span>
+                        </div>
+                    </label>
+                </div>
+                
+                <div id="mario_hpl_color_container" style="display: none; margin-top: 10px;">
+                    <label>Specificare colore HPL:</label>
+                    <input type="text" id="mario_hpl_color" class="input-field" placeholder="Scrivi colore o codice HPL">
+                </div>
+
+                <div id="mario_sumisura_container" style="display: none; margin-top: 10px; background-color: var(--gold-light); padding: 12px; border-radius: var(--radius-sm); border: 1.5px dashed var(--gold);">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label style="color: var(--gold); font-size: 11px;">Misure e Finitura Custom:</label>
+                        <input type="text" id="mario_custom_desc" class="input-field" placeholder="Es. 150x85 Calacatta Lucido" oninput="updatePrices()">
+                    </div>
+                    <div class="form-group">
+                        <label style="color: var(--gold); font-size: 11px;">Prezzo Netto Custom (€):</label>
+                        <input type="number" id="mario_custom_price" class="input-field" placeholder="Es. 1050" step="0.01" oninput="updatePrices()">
+                    </div>
+                </div>
+
+                <div class="option-group-title">2. Colore Struttura Tavolo</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="mario_struttura" value="CANAPA">
+                        <div class="option-pill-content">
+                            <span>Canapa <span class="new-badge">New</span></span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_struttura" value="NIKEL">
+                        <div class="option-pill-content">
+                            <span>Nikel <span class="new-badge">New</span></span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_struttura" value="ANTRACITE">
+                        <div class="option-pill-content">
+                            <span>Antracite</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_struttura" value="BIANCO 9016">
+                        <div class="option-pill-content">
+                            <span>Bianco 9016</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_struttura" value="GR. LONDRA">
+                        <div class="option-pill-content">
+                            <span>Grigio Londra</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option-group-title">3. Rivestimento Sedie Miami</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="mario_sedia" value="ECOPELLE CANAPA">
+                        <div class="option-pill-content">
+                            <span>Eco. Canapa <span class="new-badge">New</span></span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_sedia" value="ECOPELLE NERO NUV.">
+                        <div class="option-pill-content">
+                            <span>Eco. Nero Nuvolato</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_sedia" value="ECOPELLE BIANCO NUV.">
+                        <div class="option-pill-content">
+                            <span>Eco. Bianco Nuvolato</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_sedia" value="ECOPELLE TORTORA NUV.">
+                        <div class="option-pill-content">
+                            <span>Eco. Tortora Nuv.</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_sedia" value="TESSUTO VERDE">
+                        <div class="option-pill-content">
+                            <span>Tess. Verde Villa</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_sedia" value="TESSUTO BEIGE">
+                        <div class="option-pill-content">
+                            <span>Tess. Beige Villa</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option-group-title">4. Gamba Sedia</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="mario_gamba" value="RIVESTITA ECOPELLE">
+                        <div class="option-pill-content">
+                            <span>Rivestita Ecopelle</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_gamba" value="GRIGIO LONDRA">
+                        <div class="option-pill-content">
+                            <span>Grigio Londra</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_gamba" value="Nero">
+                        <div class="option-pill-content">
+                            <span>Nero</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="mario_gamba" value="CANAPA">
+                        <div class="option-pill-content">
+                            <span>Canapa <span class="new-badge">New</span></span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROPOSTA 2: XAVI -->
+        <div class="proposal-card" id="prop-xavi">
+            <div class="proposal-header" onclick="toggleProposal('xavi')">
+                <div class="proposal-header-left">
+                    <div class="proposal-checkbox-custom"></div>
+                    <div class="proposal-name-group">
+                        <span class="proposal-name">Tavolo Xavi + 4 sedie TORONTO</span>
+                        <span class="proposal-price-indicator" id="price-lbl-xavi">Nessuna opzione selezionata</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-body">
+                <div class="option-group-title">1. Dimensioni e Finitura Piano</div>
+                <div class="options-grid">
+                    <!-- 160x90 -->
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_piano" value="xavi_160_travertino" data-price="1420.00" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>160x90 Travertino</span>
+                            <span class="pill-subtext">€ 1.420,00</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_piano" value="xavi_160_calacatta" data-price="1454.10" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>160x90 Calacatta Opaco</span>
+                            <span class="pill-subtext">€ 1.454,10</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_piano" value="xavi_160_hpla" data-price="1202.30" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>160x90 HPL Cat.A</span>
+                            <span class="pill-subtext">€ 1.202,30</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_piano" value="xavi_160_hplc" data-price="1420.00" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>160x90 HPL Cat.C (Travertino)</span>
+                            <span class="pill-subtext">€ 1.420,00</span>
+                        </div>
+                    </label>
+                    
+                    <!-- 200x100 -->
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_piano" value="xavi_200_travertino" data-price="1447.20" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>200x100 Travertino</span>
+                            <span class="pill-subtext">€ 1.447,20</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_piano" value="xavi_200_calacatta" data-price="1481.30" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>200x100 Calacatta Opaco</span>
+                            <span class="pill-subtext">€ 1.481,30</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_piano" value="xavi_200_hpla" data-price="1261.20" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>200x100 HPL Cat.A</span>
+                            <span class="pill-subtext">€ 1.261,20</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_piano" value="xavi_200_hplc" data-price="1447.30" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>200x100 HPL Cat.C (Travertino)</span>
+                            <span class="pill-subtext">€ 1.447,30</span>
+                        </div>
+                    </label>
+                    <!-- Option Su Misura -->
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_piano" value="xavi_sumisura" data-price="0" onclick="updatePrices()">
+                        <div class="option-pill-content" style="border-color: var(--gold);">
+                            <span style="color: var(--gold); font-weight: 700;">Su Misura</span>
+                            <span class="pill-subtext">Personalizzato</span>
+                        </div>
+                    </label>
+                </div>
+                
+                <div id="xavi_hpl_color_container" style="display: none; margin-top: 10px;">
+                    <label>Specificare finitura HPL:</label>
+                    <input type="text" id="xavi_hpl_color" class="input-field" placeholder="Es. Kaspio Oro">
+                </div>
+
+                <div id="xavi_sumisura_container" style="display: none; margin-top: 10px; background-color: var(--gold-light); padding: 12px; border-radius: var(--radius-sm); border: 1.5px dashed var(--gold);">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label style="color: var(--gold); font-size: 11px;">Misure e Finitura Custom:</label>
+                        <input type="text" id="xavi_custom_desc" class="input-field" placeholder="Es. 180x95 Travertino" oninput="updatePrices()">
+                    </div>
+                    <div class="form-group">
+                        <label style="color: var(--gold); font-size: 11px;">Prezzo Netto Custom (€):</label>
+                        <input type="number" id="xavi_custom_price" class="input-field" placeholder="Es. 1500" step="0.01" oninput="updatePrices()">
+                    </div>
+                </div>
+
+                <div class="option-group-title">2. Colore Gambe Tavolo</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_gambe_tavolo" value="ANTRACITE">
+                        <div class="option-pill-content">
+                            <span>Antracite</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_gambe_tavolo" value="BIANCO 9016">
+                        <div class="option-pill-content">
+                            <span>Bianco 9016</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_gambe_tavolo" value="BRONZO">
+                        <div class="option-pill-content">
+                            <span>Bronzo</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_gambe_tavolo" value="NERO">
+                        <div class="option-pill-content">
+                            <span>Nero</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option-group-title">3. Rivestimento Sedie Toronto</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_sedia" value="VELLUTO GRIGIO">
+                        <div class="option-pill-content">
+                            <span>Velluto Grigio</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_sedia" value="VELLUTO OTTANIO">
+                        <div class="option-pill-content">
+                            <span>Velluto Ottanio</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_sedia" value="VELLUTO RUGGINE">
+                        <div class="option-pill-content">
+                            <span>Velluto Ruggine</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_sedia" value="VELLUTO BEIGE">
+                        <div class="option-pill-content">
+                            <span>Velluto Beige</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option-group-title">4. Gamba Sedia Toronto</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_gamba_sedia" value="NERO">
+                        <div class="option-pill-content">
+                            <span>Nero</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_gamba_sedia" value="BRONZO">
+                        <div class="option-pill-content">
+                            <span>Bronzo</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="xavi_gamba_sedia" value="MOKA">
+                        <div class="option-pill-content">
+                            <span>Moka</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROPOSTA 3: REMO -->
+        <div class="proposal-card" id="prop-remo">
+            <div class="proposal-header" onclick="toggleProposal('remo')">
+                <div class="proposal-header-left">
+                    <div class="proposal-checkbox-custom"></div>
+                    <div class="proposal-name-group">
+                        <span class="proposal-name">Tavolo Remo Rotondo + 4 sedie MALAGA</span>
+                        <span class="proposal-price-indicator" id="price-lbl-remo">Nessuna opzione selezionata</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proposal-body">
+                <div class="option-group-title">1. Dimensioni e Finitura Piano</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="remo_piano" value="remo_travertino" data-price="1332.00" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>Cer. Travertino Opaco</span>
+                            <span class="pill-subtext">€ 1.332,00</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="remo_piano" value="remo_hpl_c" data-price="1301.60" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>HPL Stratif. CAT C</span>
+                            <span class="pill-subtext">€ 1.301,60</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="remo_piano" value="remo_hpl_a" data-price="1166.00" onclick="updatePrices()">
+                        <div class="option-pill-content">
+                            <span>HPL Stratif. CAT A</span>
+                            <span class="pill-subtext">€ 1.166,00</span>
+                        </div>
+                    </label>
+                    <!-- Option Su Misura -->
+                    <label class="option-pill">
+                        <input type="radio" name="remo_piano" value="remo_sumisura" data-price="0" onclick="updatePrices()">
+                        <div class="option-pill-content" style="border-color: var(--gold);">
+                            <span style="color: var(--gold); font-weight: 700;">Su Misura</span>
+                            <span class="pill-subtext">Personalizzato</span>
+                        </div>
+                    </label>
+                </div>
+                
+                <div id="remo_hpl_color_container" style="display: none; margin-top: 10px;">
+                    <label>Specificare finitura HPL:</label>
+                    <input type="text" id="remo_hpl_color" class="input-field" placeholder="Es. Travertino Cat C">
+                </div>
+
+                <div id="remo_sumisura_container" style="display: none; margin-top: 10px; background-color: var(--gold-light); padding: 12px; border-radius: var(--radius-sm); border: 1.5px dashed var(--gold);">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label style="color: var(--gold); font-size: 11px;">Misure e Finitura Custom:</label>
+                        <input type="text" id="remo_custom_desc" class="input-field" placeholder="Es. Rotondo diametro 130" oninput="updatePrices()">
+                    </div>
+                    <div class="form-group">
+                        <label style="color: var(--gold); font-size: 11px;">Prezzo Netto Custom (€):</label>
+                        <input type="number" id="remo_custom_price" class="input-field" placeholder="Es. 1400" step="0.01" oninput="updatePrices()">
+                    </div>
+                </div>
+
+                <div class="option-group-title">2. Colore Struttura Tavolo</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="remo_struttura" value="NERO">
+                        <div class="option-pill-content">
+                            <span>Nero</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="remo_struttura" value="BRONZO">
+                        <div class="option-pill-content">
+                            <span>Bronzo</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="remo_struttura" value="CANAPA">
+                        <div class="option-pill-content">
+                            <span>Canapa</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option-group-title">3. Rivestimento Sedie Malaga</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="remo_sedia" value="VELLUTO GRACE OTTANIO">
+                        <div class="option-pill-content">
+                            <span>Velluto Ottanio</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="remo_sedia" value="VELLUTO GRACE BEIGE">
+                        <div class="option-pill-content">
+                            <span>Velluto Beige</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="remo_sedia" value="VELLUTO GRACE GRIGIO">
+                        <div class="option-pill-content">
+                            <span>Velluto Grigio</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="remo_sedia" value="VELLUTO GRACE RUGGINE">
+                        <div class="option-pill-content">
+                            <span>Velluto Ruggine</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option-group-title">4. Gamba Sedia Malaga</div>
+                <div class="options-grid">
+                    <label class="option-pill">
+                        <input type="radio" name="remo_gamba_sedia" value="NERO">
+                        <div class="option-pill-content">
+                            <span>Nero</span>
+                        </div>
+                    </label>
+                    <label class="option-pill">
+                        <input type="radio" name="remo_gamba_sedia" value="BRONZO">
+                        <div class="option-pill-content">
+                            <span>Bronzo</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Info e note footer -->
+    <div class="promo-banner">
+        <div class="promo-banner-main">PROMOZIONE CAMPIONATURA 2026</div>
+        <div class="promo-banner-sub">
+            L'acquisto di almeno 2 proposte dà diritto ad uno <strong>SCONTO EXTRA DEL 5%</strong> sulla campionatura.<br>
+            Adesione dà diritto all'<strong>8% di sconto extra</strong> sui riordini fino a fine anno.
+        </div>
+    </div>
+</div>
+
+<!-- STICKY FOOTER -->
+<div class="sticky-footer">
+    <div class="price-summary">
+        <div>
+            <div class="price-label">Totale Stimato (Netto)</div>
+            <div class="discount-applied" id="discount-badge">Sconto Extra 5% applicato!</div>
+        </div>
+        <div class="price-value-container">
+            <div class="price-value" id="total-price">€ 0,00</div>
+        </div>
+    </div>
+    
+    <div class="buttons-group">
+        <button onclick="sendOrder('whatsapp')" class="btn btn-whatsapp">
+            <svg viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966C16.732 2.012 14.28 1.01 11.66 1.008c-5.441 0-9.87 4.373-9.873 9.8.001 1.748.496 3.454 1.432 4.978l-.993 3.626 3.738-.97c1.417.848 3.01 1.293 4.693 1.295zM17.47 14.86c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            </svg>
+            Invia WhatsApp
+        </button>
+        <button onclick="sendOrder('gmail')" class="btn btn-email">
+            <svg viewBox="0 0 24 24">
+                <path d="M24 4.5v15c0 .85-.65 1.5-1.5 1.5H21V7.38l-9 5.62-9-5.62V21H1.5C.65 21 0 20.35 0 19.5v-15c0-.85.65-1.5 1.5-1.5H3.6l8.4 5.25 8.4-5.25H22.5c.85 0 1.5.65 1.5 1.5z"/>
+            </svg>
+            Invia via Email
+        </button>
+    </div>
+</div>
+
+<script>
+    // State of selected proposals
+    const selections = {
+        mario: { active: false, price: 0 },
+        xavi: { active: false, price: 0 },
+        remo: { active: false, price: 0 }
+    };
+
+    function toggleProposal(name) {
+        const card = document.getElementById('prop-' + name);
+        selections[name].active = !selections[name].active;
+        
+        if (selections[name].active) {
+            card.classList.add('active');
+        } else {
+            card.classList.remove('active');
+        }
+        
+        updatePrices();
+    }
+
+    // Dynamic inputs show/hide helper based on selected option
+    document.querySelectorAll('input[name="mario_piano"]').forEach(input => {
+        input.addEventListener('change', () => {
+            const container = document.getElementById('mario_hpl_color_container');
+            const customContainer = document.getElementById('mario_sumisura_container');
+            
+            if (input.value.includes('hpl')) {
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+            }
+
+            if (input.value === 'mario_sumisura') {
+                customContainer.style.display = 'block';
+            } else {
+                customContainer.style.display = 'none';
+            }
+        });
+    });
+
+    document.querySelectorAll('input[name="xavi_piano"]').forEach(input => {
+        input.addEventListener('change', () => {
+            const container = document.getElementById('xavi_hpl_color_container');
+            const customContainer = document.getElementById('xavi_sumisura_container');
+            
+            if (input.value.includes('hpl')) {
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+            }
+
+            if (input.value === 'xavi_sumisura') {
+                customContainer.style.display = 'block';
+            } else {
+                customContainer.style.display = 'none';
+            }
+        });
+    });
+
+    document.querySelectorAll('input[name="remo_piano"]').forEach(input => {
+        input.addEventListener('change', () => {
+            const container = document.getElementById('remo_hpl_color_container');
+            const customContainer = document.getElementById('remo_sumisura_container');
+            
+            if (input.value.includes('hpl')) {
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+            }
+
+            if (input.value === 'remo_sumisura') {
+                customContainer.style.display = 'block';
+            } else {
+                customContainer.style.display = 'none';
+            }
+        });
+    });
+
+    function updatePrices() {
+        // Compute subtotal for Mario
+        if (selections.mario.active) {
+            const checked = document.querySelector('input[name="mario_piano"]:checked');
+            if (checked) {
+                if (checked.value === 'mario_sumisura') {
+                    const customPrice = parseFloat(document.getElementById('mario_custom_price').value) || 0;
+                    selections.mario.price = customPrice;
+                    const desc = document.getElementById('mario_custom_desc').value || 'Su Misura';
+                    document.getElementById('price-lbl-mario').innerText = "Selezionato (Custom): " + desc + " - € " + selections.mario.price.toLocaleString('it-IT', {minimumFractionDigits: 2});
+                } else {
+                    selections.mario.price = parseFloat(checked.getAttribute('data-price'));
+                    document.getElementById('price-lbl-mario').innerText = "Selezionato: € " + selections.mario.price.toLocaleString('it-IT', {minimumFractionDigits: 2});
+                }
+            } else {
+                selections.mario.price = 0;
+                document.getElementById('price-lbl-mario').innerText = "Seleziona una dimensione/piano";
+            }
+        } else {
+            selections.mario.price = 0;
+            document.getElementById('price-lbl-mario').innerText = "Nessuna opzione selezionata";
+        }
+
+        // Compute subtotal for Xavi
+        if (selections.xavi.active) {
+            const checked = document.querySelector('input[name="xavi_piano"]:checked');
+            if (checked) {
+                if (checked.value === 'xavi_sumisura') {
+                    const customPrice = parseFloat(document.getElementById('xavi_custom_price').value) || 0;
+                    selections.xavi.price = customPrice;
+                    const desc = document.getElementById('xavi_custom_desc').value || 'Su Misura';
+                    document.getElementById('price-lbl-xavi').innerText = "Selezionato (Custom): " + desc + " - € " + selections.xavi.price.toLocaleString('it-IT', {minimumFractionDigits: 2});
+                } else {
+                    selections.xavi.price = parseFloat(checked.getAttribute('data-price'));
+                    document.getElementById('price-lbl-xavi').innerText = "Selezionato: € " + selections.xavi.price.toLocaleString('it-IT', {minimumFractionDigits: 2});
+                }
+            } else {
+                selections.xavi.price = 0;
+                document.getElementById('price-lbl-xavi').innerText = "Seleziona una dimensione/piano";
+            }
+        } else {
+            selections.xavi.price = 0;
+            document.getElementById('price-lbl-xavi').innerText = "Nessuna opzione selezionata";
+        }
+
+        // Compute subtotal for Remo
+        if (selections.remo.active) {
+            const checked = document.querySelector('input[name="remo_piano"]:checked');
+            if (checked) {
+                if (checked.value === 'remo_sumisura') {
+                    const customPrice = parseFloat(document.getElementById('remo_custom_price').value) || 0;
+                    selections.remo.price = customPrice;
+                    const desc = document.getElementById('remo_custom_desc').value || 'Su Misura';
+                    document.getElementById('price-lbl-remo').innerText = "Selezionato (Custom): " + desc + " - € " + selections.remo.price.toLocaleString('it-IT', {minimumFractionDigits: 2});
+                } else {
+                    selections.remo.price = parseFloat(checked.getAttribute('data-price'));
+                    document.getElementById('price-lbl-remo').innerText = "Selezionato: € " + selections.remo.price.toLocaleString('it-IT', {minimumFractionDigits: 2});
+                }
+            } else {
+                selections.remo.price = 0;
+                document.getElementById('price-lbl-remo').innerText = "Seleziona un piano";
+            }
+        } else {
+            selections.remo.price = 0;
+            document.getElementById('price-lbl-remo').innerText = "Nessuna opzione selezionata";
+        }
+
+        // Total sum
+        let subtotal = selections.mario.price + selections.xavi.price + selections.remo.price;
+        
+        // Count active proposals
+        let activeCount = 0;
+        if (selections.mario.active && selections.mario.price > 0) activeCount++;
+        if (selections.xavi.active && selections.xavi.price > 0) activeCount++;
+        if (selections.remo.active && selections.remo.price > 0) activeCount++;
+
+        let finalTotal = subtotal;
+        const discountBadge = document.getElementById('discount-badge');
+
+        if (activeCount >= 2) {
+            finalTotal = subtotal * 0.95; // 5% discount
+            discountBadge.style.display = 'block';
+        } else {
+            discountBadge.style.display = 'none';
+        }
+
+        document.getElementById('total-price').innerText = "€ " + finalTotal.toLocaleString('it-IT', {minimumFractionDigits: 2});
+    }
+
+    function buildMessageText() {
+        const cliente = document.getElementById('cliente').value || 'Non specificato';
+        const citta = document.getElementById('citta').value || 'Non specificata';
+        
+        let msg = `*ORDINE LA PRIMAVERA 2026*\n`;
+        msg += `-----------------------------\n`;
+        msg += `*Cliente:* ${cliente}\n`;
+        msg += `*Città:* ${citta}\n`;
+        msg += `-----------------------------\n\n`;
+
+        let activeCount = 0;
+        let subtotal = 0;
+
+        // Mario order content
+        if (selections.mario.active && selections.mario.price > 0) {
+            activeCount++;
+            subtotal += selections.mario.price;
+            const pianoChecked = document.querySelector('input[name="mario_piano"]:checked');
+            const strutturaChecked = document.querySelector('input[name="mario_struttura"]:checked');
+            const sediaChecked = document.querySelector('input[name="mario_sedia"]:checked');
+            const gambaChecked = document.querySelector('input[name="mario_gamba"]:checked');
+            const hplColor = document.getElementById('mario_hpl_color').value;
+
+            msg += `*PROPOSTA MARIO + 4 MIAMI*\n`;
+            if (pianoChecked && pianoChecked.value === 'mario_sumisura') {
+                const desc = document.getElementById('mario_custom_desc').value || 'Su Misura';
+                msg += `- Piano (Custom): ${desc}\n`;
+            } else {
+                msg += `- Piano: ${pianoChecked ? pianoChecked.parentNode.querySelector('span').innerText : 'Non selezionato'}`;
+                if (pianoChecked && pianoChecked.value.includes('hpl') && hplColor) {
+                    msg += ` (${hplColor})`;
+                }
+                msg += `\n`;
+            }
+            msg += `- Struttura Tavolo: ${strutturaChecked ? strutturaChecked.value : 'Non selezionata'}\n`;
+            msg += `- Rivestimento Sedia: ${sediaChecked ? sediaChecked.value : 'Non selezionato'}\n`;
+            msg += `- Gamba Sedia: ${gambaChecked ? gambaChecked.value : 'Non selezionata'}\n`;
+            msg += `- Prezzo: € ${selections.mario.price.toFixed(2)}\n\n`;
+        }
+
+        // Xavi order content
+        if (selections.xavi.active && selections.xavi.price > 0) {
+            activeCount++;
+            subtotal += selections.xavi.price;
+            const pianoChecked = document.querySelector('input[name="xavi_piano"]:checked');
+            const gambeTavoloChecked = document.querySelector('input[name="xavi_gambe_tavolo"]:checked');
+            const sediaChecked = document.querySelector('input[name="xavi_sedia"]:checked');
+            const gambaChecked = document.querySelector('input[name="xavi_gamba_sedia"]:checked');
+            const hplColor = document.getElementById('xavi_hpl_color').value;
+
+            msg += `*PROPOSTA DESIGN XAVI + 4 TORONTO*\n`;
+            if (pianoChecked && pianoChecked.value === 'xavi_sumisura') {
+                const desc = document.getElementById('xavi_custom_desc').value || 'Su Misura';
+                msg += `- Piano (Custom): ${desc}\n`;
+            } else {
+                msg += `- Piano: ${pianoChecked ? pianoChecked.parentNode.querySelector('span').innerText : 'Non selezionato'}`;
+                if (pianoChecked && pianoChecked.value.includes('hpl') && hplColor) {
+                    msg += ` (${hplColor})`;
+                }
+                msg += `\n`;
+            }
+            msg += `- Gambe Tavolo: ${gambeTavoloChecked ? gambeTavoloChecked.value : 'Non selezionate'}\n`;
+            msg += `- Rivestimento Sedia: ${sediaChecked ? sediaChecked.value : 'Non selezionato'}\n`;
+            msg += `- Gamba Sedia: ${gambaChecked ? gambaChecked.value : 'Non selezionata'}\n`;
+            msg += `- Prezzo: € ${selections.xavi.price.toFixed(2)}\n\n`;
+        }
+
+        // Remo order content
+        if (selections.remo.active && selections.remo.price > 0) {
+            activeCount++;
+            subtotal += selections.remo.price;
+            const pianoChecked = document.querySelector('input[name="remo_piano"]:checked');
+            const strutturaChecked = document.querySelector('input[name="remo_struttura"]:checked');
+            const sediaChecked = document.querySelector('input[name="remo_sedia"]:checked');
+            const gambaChecked = document.querySelector('input[name="remo_gamba_sedia"]:checked');
+            const hplColor = document.getElementById('remo_hpl_color').value;
+
+            msg += `*PROPOSTA DESIGN REMO + 4 MALAGA*\n`;
+            if (pianoChecked && pianoChecked.value === 'remo_sumisura') {
+                const desc = document.getElementById('remo_custom_desc').value || 'Su Misura';
+                msg += `- Piano (Custom): ${desc}\n`;
+            } else {
+                msg += `- Piano: ${pianoChecked ? pianoChecked.parentNode.querySelector('span').innerText : 'Non selezionato'}`;
+                if (pianoChecked && pianoChecked.value.includes('hpl') && hplColor) {
+                    msg += ` (${hplColor})`;
+                }
+                msg += `\n`;
+            }
+            msg += `- Struttura Tavolo: ${strutturaChecked ? strutturaChecked.value : 'Non selezionata'}\n`;
+            msg += `- Rivestimento Sedia: ${sediaChecked ? sediaChecked.value : 'Non selezionato'}\n`;
+            msg += `- Gamba Sedia: ${gambaChecked ? gambaChecked.value : 'Non selezionata'}\n`;
+            msg += `- Prezzo: € ${selections.remo.price.toFixed(2)}\n\n`;
+        }
+
+        if (activeCount === 0) {
+            alert("Seleziona almeno una proposta prima di inviare!");
+            return null;
+        }
+
+        msg += `-----------------------------\n`;
+        msg += `*Imponibile:* € ${subtotal.toFixed(2)}\n`;
+        if (activeCount >= 2) {
+            const discount = subtotal * 0.05;
+            const finalTotal = subtotal * 0.95;
+            msg += `*Sconto extra 5%:* -€ ${discount.toFixed(2)}\n`;
+            msg += `*TOTALE NETTO:* € ${finalTotal.toFixed(2)}\n`;
+        } else {
+            msg += `*TOTALE NETTO:* € ${subtotal.toFixed(2)}\n`;
+        }
+        msg += `-----------------------------\n`;
+        msg += `*Nota:* La promo dà diritto a 8% di sconto extra sul riordino dei modelli campionati fino a fine anno.\n`;
+
+        return msg;
+    }
+
+    function sendOrder(channel) {
+        const message = buildMessageText();
+        if (!message) return;
+
+        if (channel === 'whatsapp') {
+            const encodedText = encodeURIComponent(message);
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
+            window.open(whatsappUrl, '_blank');
+        } else if (channel === 'gmail') {
+            const cliente = document.getElementById('cliente').value || 'Rivenditore';
+            const subject = encodeURIComponent(`Ordine La Primavera 2026 - ${cliente}`);
+            const body = encodeURIComponent(message.replace(/\*/g, '')); // Strip markdown bold asterisks for email
+            const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
+            window.location.href = mailtoUrl;
+        }
+    }
+</script>
+
+</body>
+</html>
